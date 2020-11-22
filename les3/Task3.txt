@@ -1,0 +1,105 @@
+3. Создать пользователя с правами суперпользователя. Сделать так, чтобы sudo не требовал пароль для выполнения команд.
+
+_________________________________________________________________________________
+CREATE NEW USER
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo adduser new_superuser
+Добавляется пользователь «new_superuser» ...
+Добавляется новая группа «new_superuser» (1003) ...
+Добавляется новый пользователь «new_superuser» (1002) в группу «new_superuser» ...
+Создаётся домашний каталог «/home/new_superuser» ...
+Копирование файлов из «/etc/skel» ...
+Новый пароль :
+Повторите ввод нового пароля :
+passwd: пароль успешно обновлён
+Изменение информации о пользователе new_superuser
+Введите новое значение или нажмите ENTER для выбора значения по умолчанию
+        Полное имя []: Fedor Michailovich Dostoevsky
+        Номер комнаты []: 12
+        Рабочий телефон []: -
+        Домашний телефон []: -
+        Другое []: DRUGOE
+Данная информация корректна? [Y/n] Y
+olegkrilov@olegkrilov-VirtualBox:~$
+
+_________________________________________________________________________________
+ADD USER TO THE sudo GROUP
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo usermod -aG sudo new_superuser
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,olegkrilov
+...
+cdrom:x:24:olegkrilov
+floppy:x:25:
+tape:x:26:
+sudo:x:27:olegkrilov,new_superuser
+...
+lxd:x:131:olegkrilov
+olegkrilov:x:1000:
+sambashare:x:132:olegkrilov
+systemd-coredump:x:999:
+brave_new_user_revived:x:1001:
+brave_new_group:x:1002:
+new_superuser:x:1003:
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+EDIT sudo SETTINGS
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudoedit /etc/sudoers
+
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+...
+# User privilege specification
+root    ALL=(ALL:ALL) ALL
+
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) NOPASSWD:ALL
+
+# See sudoers(5) for more information on "#include" directives:
+
+#includedir /etc/sudoers.d
+
+
+_________________________________________________________________________________
+SAVE & CHECK
+
+olegkrilov@olegkrilov-VirtualBox:~$ su new_superuser
+Пароль:
+new_superuser@olegkrilov-VirtualBox:/home/olegkrilov$
+
+new_superuser@olegkrilov-VirtualBox:/home/olegkrilov$ sudo usermod -aG brave_new_group brave_new_user_revived
+new_superuser@olegkrilov-VirtualBox:/home/olegkrilov$ cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+...
+tape:x:26:
+sudo:x:27:olegkrilov,new_superuser
+audio:x:29:pulse
+...
+gdm:x:130:
+lxd:x:131:olegkrilov
+olegkrilov:x:1000:
+sambashare:x:132:olegkrilov
+systemd-coredump:x:999:
+brave_new_user_revived:x:1001:
+brave_new_group:x:1002:brave_new_user_revived
+new_superuser:x:1003:
+
+new_superuser@olegkrilov-VirtualBox:/home/olegkrilov$ sudo gpasswd -d brave_new_user_revived brave_new_group
+Удаление пользователя brave_new_user_revived из группы brave_new_group
+new_superuser@olegkrilov-VirtualBox:/home/olegkrilov$
+
+_________________________________________________________________________________
+RESULT: AS WE CAN SEE PASSWORD WASN'T REQUIRED
+
