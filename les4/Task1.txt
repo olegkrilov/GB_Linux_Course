@@ -1,0 +1,90 @@
+1. Потоки ввода/вывода. Создать файл, используя команду echo. Используя команду cat, 
+прочитать содержимое каталога etc, ошибки перенаправить в отдельный файл.
+
+____________________________________________________________________________________
+LIST CURRENT FOLDER
+
+olegkrilov@olegkrilov-VirtualBox:~$ ls -l
+итого 36
+drwxrwxr-x 2 brave_new_user_revived brave_new_group 4096 ноя 22 07:27  SomeNewFolder
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Видео
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Документы
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Загрузки
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Изображения
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Музыка
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Общедоступные
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45 'Рабочий стол'
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Шаблоны
+
+____________________________________________________________________________________
+CREATE FILE WITH ECHO
+
+olegkrilov@olegkrilov-VirtualBox:~$ echo "This should work!" >> test.file.txt
+olegkrilov@olegkrilov-VirtualBox:~$ ls -l
+итого 40
+drwxrwxr-x 2 brave_new_user_revived brave_new_group 4096 ноя 22 07:27  SomeNewFolder
+-rw-rw-r-- 1 olegkrilov             olegkrilov        18 ноя 22 08:25  test.file.txt
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Видео
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Документы
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Загрузки
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Изображения
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Музыка
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Общедоступные
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45 'Рабочий стол'
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Шаблоны
+olegkrilov@olegkrilov-VirtualBox:~$ cat test.file.txt
+This should work!
+olegkrilov@olegkrilov-VirtualBox:~$
+
+____________________________________________________________________________________
+ERROR REDIRECT TO LOG FILE
+
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/* 2>> etc-err.log
+...
+cat: /etc/vulkan: Это каталог
+cat: /etc/wpa_supplicant: Это каталог
+cat: /etc/X11: Это каталог
+cat: /etc/xdg: Это каталог
+cat: /etc/xml: Это каталог
+olegkrilov@olegkrilov-VirtualBox:~$ ls -l
+итого 44
+-rw-rw-r-- 1 olegkrilov             olegkrilov        33 ноя 22 15:45  etc-err.log
+drwxrwxr-x 2 brave_new_user_revived brave_new_group 4096 ноя 22 07:27  SomeNewFolder
+-rw-rw-r-- 1 olegkrilov             olegkrilov        18 ноя 22 08:25  test.file.txt
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Видео
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Документы
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Загрузки
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Изображения
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Музыка
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Общедоступные
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45 'Рабочий стол'
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Шаблоны
+olegkrilov@olegkrilov-VirtualBox:~$ cat etc-err.log
+...
+cat: /etc/sudoers: Отказано в доступе
+cat: /etc/sudoers.d: Это каталог
+cat: /etc/sysctl.d: Это каталог
+cat: /etc/terminfo: Это каталог
+cat: /etc/thermald: Это каталог
+cat: /etc/tmpfiles.d: Это каталог
+cat: /etc/ubuntu-advantage: Это каталог
+cat: /etc/udev: Это каталог
+cat: /etc/udisks2: Это каталог
+cat: /etc/ufw: Это каталог
+cat: /etc/update-manager: Это каталог
+cat: /etc/update-motd.d: Это каталог
+cat: /etc/update-notifier: Это каталог
+cat: /etc/UPower: Это каталог
+cat: /etc/usb_modeswitch.d: Это каталог
+cat: /etc/vim: Это каталог
+cat: /etc/vmware-tools: Это каталог
+cat: /etc/vulkan: Это каталог
+cat: /etc/wpa_supplicant: Это каталог
+cat: /etc/X11: Это каталог
+cat: /etc/xdg: Это каталог
+
+____________________________________________________________________________________
+CLOSE ERROR LOG
+
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/ 2> /dev/null
+olegkrilov@olegkrilov-VirtualBox:~$

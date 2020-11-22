@@ -1,0 +1,69 @@
+4. Сигналы процессам. Запустите mc. Используя ps, найдите PID процесса, завершите процесс, передав ему сигнал 9.
+
+____________________________________________________________________________________
+INSTALL mc
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo apt-get install mc
+...
+
+____________________________________________________________________________________
+RUN mc
+
+olegkrilov@olegkrilov-VirtualBox:~$ mc
+...
+
+
+root       59049       2  0 17:32 ?        00:00:00 [kworker/u2:1-events_unbound]
+root       59071       2  0 17:32 ?        00:00:00 [kworker/0:1-events]
+olegkri+   59104    1072  0 17:37 ?        00:00:00 /bin/sh /usr/lib/update-notifier/update-notifier-crash
+olegkri+   59109   59104  0 17:37 ?        00:00:01 /usr/bin/python3 /usr/share/apport/apport-gtk
+olegkri+   59126   56515  0 17:40 pts/1    00:00:00 mc
+olegkri+   59128   59126  0 17:40 pts/2    00:00:00 bash -rcfile .bashrc
+olegkri+   59134   59128  0 17:40 pts/2    00:00:00 ps -ef
+
+
+____________________________________________________________________________________
+[Ctrl + O] TO COLLAPSE mc, THEN LIST PROCESSES
+
+olegkrilov@olegkrilov-VirtualBox:~$ ps -ef
+...
+root       57947       1  0 17:08 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+root       57948       2  0 17:08 ?        00:00:00 [kworker/u2:0-events_unbound]
+root       58073       2  0 17:25 ?        00:00:00 [kworker/u2:2-events_unbound]
+root       59049       2  0 17:32 ?        00:00:00 [kworker/u2:1-events_unbound]
+root       59071       2  0 17:32 ?        00:00:00 [kworker/0:1-events]
+olegkri+   59104    1072  0 17:37 ?        00:00:00 /bin/sh /usr/lib/update-notifier/update-notifier-crash
+olegkri+   59109   59104  0 17:37 ?        00:00:01 /usr/bin/python3 /usr/share/apport/apport-gtk
+olegkri+   59126   56515  0 17:40 pts/1    00:00:00 mc
+olegkri+   59128   59126  0 17:40 pts/2    00:00:00 bash -rcfile .bashrc
+olegkri+   59134   59128  0 17:40 pts/2    00:00:00 ps -ef
+
+
+____________________________________________________________________________________
+KILL mc PROCESS USING ITS PID 
+
+olegkrilov@olegkrilov-VirtualBox:~$ kill -15 59126
+olegkrilov@olegkrilov-VirtualBox:~$ kill -15 59126Завершено
+
+
+____________________________________________________________________________________
+VERIFY RESULT
+
+olegkrilov@olegkrilov-VirtualBox:~$ ps -ef
+...
+olegkri+   56515   56514  0 15:57 pts/1    00:00:00 -bash
+olegkri+   56524   56515  0 15:58 pts/1    00:00:00 less
+root       57899       2  0 17:06 ?        00:00:03 [kworker/0:3-events]
+root       57947       1  0 17:08 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+root       57948       2  0 17:08 ?        00:00:00 [kworker/u2:0-events_power_efficient]
+root       58073       2  0 17:25 ?        00:00:00 [kworker/u2:2-events_unbound]
+root       59071       2  0 17:32 ?        00:00:00 [kworker/0:1-events]
+olegkri+   59104    1072  0 17:37 ?        00:00:00 /bin/sh /usr/lib/update-notifier/update-notifier-crash
+olegkri+   59109   59104  0 17:37 ?        00:00:01 /usr/bin/python3 /usr/share/apport/apport-gtk
+root       59136       2  0 17:43 ?        00:00:00 [kworker/u2:1-events_power_efficient]
+olegkri+   59138   56515  0 17:46 pts/1    00:00:00 ps -ef
+
+
+
+
+
