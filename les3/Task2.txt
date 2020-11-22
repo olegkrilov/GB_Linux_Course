@@ -1,0 +1,151 @@
+2. Управление группами:
+a) создать группу с использованием утилит и в ручном режиме;
+b) попрактиковаться в смене групп у пользователей;
+c) добавить пользователя в группу, не меняя основной;
+d) удалить пользователя из группы.
+
+
+_________________________________________________________________________________
+SHOW EXISTING GROUPS
+
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,olegkrilov
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+...
+gdm:x:130:
+lxd:x:131:olegkrilov
+olegkrilov:x:1000:
+sambashare:x:132:olegkrilov
+systemd-coredump:x:999:
+brave_new_user_revived:x:1001:
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+CREATE GROUP MANUALLY
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo addgroup brave_new_group
+Добавляется группа «brave_new_group» (GID 1002) ...
+Готово.
+olegkrilov@olegkrilov-VirtualBox:~$
+
+_________________________________________________________________________________
+
+ADD USER TO GROUP
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo usermod -aG brave_new_group brave_new_user_revived
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,olegkrilov
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+uucp:x:10:
+man:x:12:
+proxy:x:13:
+...
+gdm:x:130:
+lxd:x:131:olegkrilov
+olegkrilov:x:1000:
+sambashare:x:132:olegkrilov
+systemd-coredump:x:999:
+brave_new_user_revived:x:1001:
+brave_new_group:x:1002:brave_new_user_revived
+olegkrilov@olegkrilov-VirtualBox:~$
+
+REMOVE USER FROM GROUP
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo gpasswd -d brave_new_user_revived brave_new_group
+[sudo] пароль для olegkrilov:
+Удаление пользователя brave_new_user_revived из группы brave_new_group
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,olegkrilov
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+...
+systemd-coredump:x:999:
+brave_new_user_revived:x:1001:
+brave_new_group:x:1002:
+olegkrilov@olegkrilov-VirtualBox:~$
+
+_________________________________________________________________________________
+
+CHANGE USER GROUPS & FILE PERMISSIONS
+
+CREATE SOME TEST FOLDER 
+
+olegkrilov@olegkrilov-VirtualBox:~$ mkdir SomeNewFolder
+olegkrilov@olegkrilov-VirtualBox:~$ echo "TEST_TEST_TEST" >> SomeNewFolder/SomeNewFile.txt
+olegkrilov@olegkrilov-VirtualBox:~$ ls -l SomeNewFolder
+итого 4
+-rw-rw-r-- 1 olegkrilov olegkrilov 15 ноя 22 07:27 SomeNewFile.txt
+olegkrilov@olegkrilov-VirtualBox:~$ ls -l
+итого 36
+drwxrwxr-x 2 olegkrilov olegkrilov 4096 ноя 22 07:27  SomeNewFolder
+drwxr-xr-x 2 olegkrilov olegkrilov 4096 ноя 21 21:45  Видео
+drwxr-xr-x 2 olegkrilov olegkrilov 4096 ноя 21 21:45  Документы
+drwxr-xr-x 2 olegkrilov olegkrilov 4096 ноя 21 21:45  Загрузки
+drwxr-xr-x 2 olegkrilov olegkrilov 4096 ноя 21 21:45  Изображения
+drwxr-xr-x 2 olegkrilov olegkrilov 4096 ноя 21 21:45  Музыка
+drwxr-xr-x 2 olegkrilov olegkrilov 4096 ноя 21 21:45  Общедоступные
+drwxr-xr-x 2 olegkrilov olegkrilov 4096 ноя 21 21:45 'Рабочий стол'
+drwxr-xr-x 2 olegkrilov olegkrilov 4096 ноя 21 21:45  Шаблоны
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+CHANGE FOLDER OWNER & GROUP
+
+olegkrilov@olegkrilov-VirtualBox:~$ chown brave_new_user_revived:brave_new_group SomeNewFolder
+chown: изменение владельца 'SomeNewFolder': Операция не позволена
+olegkrilov@olegkrilov-VirtualBox:~$ sudo chown brave_new_user_revived:brave_new_group SomeNewFolder
+olegkrilov@olegkrilov-VirtualBox:~$ ls -l
+итого 36
+drwxrwxr-x 2 brave_new_user_revived brave_new_group 4096 ноя 22 07:27  SomeNewFolder
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Видео
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Документы
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Загрузки
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Изображения
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Музыка
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Общедоступные
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45 'Рабочий стол'
+drwxr-xr-x 2 olegkrilov             olegkrilov      4096 ноя 21 21:45  Шаблоны
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+NOW LET'S CHECK WHO IS THE OWNER OF THE FILE INSIDE TARGET FOLDER
+
+olegkrilov@olegkrilov-VirtualBox:~$ ls -l SomeNewFolder
+итого 4
+-rw-rw-r-- 1 olegkrilov olegkrilov 15 ноя 22 07:27 SomeNewFile.txt
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+NOW WILL REPEAT CHANGE OWNER PROCEDURE BUT WITH -R FLAG
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo chown -R brave_new_user_revived:brave_new_group SomeNewFolder
+olegkrilov@olegkrilov-VirtualBox:~$ ls -l SomeNewFolder
+итого 4
+-rw-rw-r-- 1 brave_new_user_revived brave_new_group 15 ноя 22 07:27 SomeNewFile.txt
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+
+

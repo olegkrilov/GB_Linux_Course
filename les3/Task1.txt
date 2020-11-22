@@ -1,0 +1,112 @@
+1. Управление пользователями:
+a) создать пользователя, используя утилиту useradd;
+b) удалить пользователя, используя утилиту userdel;
+c) создать пользователя в ручном режиме.
+
+_________________________________________________________________________________
+SHOW CURRENT USERS:
+
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+...
+olegkrilov:x:1000:1000:olegkrilov,,,:/home/olegkrilov:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+sshd:x:126:65534::/run/sshd:/usr/sbin/nologin
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+ATTEMPT TO ADD NEW:
+
+olegkrilov@olegkrilov-VirtualBox:~$ useradd brave_new_user
+useradd: Permission denied.
+useradd: не удалось заблокировать /etc/passwd; попробуйте ещё раз позже.
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+SECOND ATTEMPT WITH SUDO
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo useradd brave_new_user
+[sudo] пароль для olegkrilov:
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+...
+olegkrilov:x:1000:1000:olegkrilov,,,:/home/olegkrilov:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+sshd:x:126:65534::/run/sshd:/usr/sbin/nologin
+brave_new_user:x:1001:1001::/home/brave_new_user:/bin/sh
+olegkrilov@olegkrilov-VirtualBox:~$
+
+RESULT: CREATED USER brave_new_user
+
+_________________________________________________________________________________
+
+REMOVE CREATED USER
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo userdel brave_new_user
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+...
+gnome-initial-setup:x:124:65534::/run/gnome-initial-setup/:/bin/false
+gdm:x:125:130:Gnome Display Manager:/var/lib/gdm3:/bin/false
+olegkrilov:x:1000:1000:olegkrilov,,,:/home/olegkrilov:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+sshd:x:126:65534::/run/sshd:/usr/sbin/nologin
+olegkrilov@olegkrilov-VirtualBox:~$
+olegkrilov@olegkrilov-VirtualBox:~$
+
+RESULT: REMOVED USER brave_new_user
+
+_________________________________________________________________________________
+
+CREATE USER MANUALLY
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo adduser brave_new_user_revived
+Добавляется пользователь «brave_new_user_revived» ...
+Добавляется новая группа «brave_new_user_revived» (1001) ...
+Добавляется новый пользователь «brave_new_user_revived» (1001) в группу «brave_new_user_revived» ...
+Создаётся домашний каталог «/home/brave_new_user_revived» ...
+Копирование файлов из «/etc/skel» ...
+Новый пароль :
+Повторите ввод нового пароля :
+passwd: пароль успешно обновлён
+Изменение информации о пользователе brave_new_user_revived
+Введите новое значение или нажмите ENTER для выбора значения по умолчанию
+        Полное имя []: Brave New User
+        Номер комнаты []: 145
+        Рабочий телефон []: 223 322 322 223
+        Домашний телефон []: 322 322 223 223
+        Другое []: Это Другое
+chfn: в «Это Другое» содержатся не ASCII-символы
+Данная информация корректна? [Y/n] Y
+olegkrilov@olegkrilov-VirtualBox:~$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+...
+gnome-initial-setup:x:124:65534::/run/gnome-initial-setup/:/bin/false
+gdm:x:125:130:Gnome Display Manager:/var/lib/gdm3:/bin/false
+olegkrilov:x:1000:1000:olegkrilov,,,:/home/olegkrilov:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+sshd:x:126:65534::/run/sshd:/usr/sbin/nologin
+brave_new_user_revived:x:1001:1001:Brave New User,145,223 322 322 223,322 322 223 223,Это Другое:/home/brave_new_user_revived:/bin/bash
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
