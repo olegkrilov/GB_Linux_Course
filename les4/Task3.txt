@@ -1,0 +1,159 @@
+3. Управление процессами. Изменить конфигурационный файл службы SSH: /etc/ssh/sshd_config, 
+отключив аутентификацию по паролю PasswordAuthentication no. Выполните рестарт службы 
+systemctl restart sshd (service sshd restart), верните аутентификацию по паролю, 
+выполните reload службы systemctl reload sshd (service sshd reload). 
+В чём различие между действиями restart и reload? Создайте файл при помощи команды cat > file_name, 
+напишите текст и завершите комбинацией ctrl+d. Какой сигнал передадим процессу?
+
+____________________________________________________________________________________
+LET'S SEE THE INITIAL STATE WITH nano
+
+olegkrilov@olegkrilov-VirtualBox:~$ nano /etc/ssh/sshd_config
+
+...
+#IgnoreUserKnownHosts no
+# Don't read the user's ~/.rhosts and ~/.shosts files
+#IgnoreRhosts yes
+
+# To disable tunneled clear text passwords, change to no here!
+# PasswordAuthentication yes
+#PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+...
+
+____________________________________________________________________________________
+DO CHANGE
+
+...
+# Don't read the user's ~/.rhosts and ~/.shosts files
+#IgnoreRhosts yes
+
+# To disable tunneled clear text passwords, change to no here!
+PasswordAuthentication no
+#PermitEmptyPasswords no
+...
+
+[^O] > [Yes] > [Enter]
+
+
+_____________________________________________________________________________________
+SEE CURRENT PID
+
+olegkrilov@olegkrilov-VirtualBox:~$ ps -ef
+...
+root       56625       2  0 16:17 ?        00:00:00 [kworker/u2:0-events_power_efficient]
+root       57777       2  0 16:40 ?        00:00:00 [kworker/u2:2-events_unbound]
+root       57836       2  0 16:56 ?        00:00:00 [kworker/0:0-cgroup_destroy]
+root       57859       2  0 16:58 ?        00:00:00 [kworker/u2:1-events_unbound]
+root       57874       2  0 17:02 ?        00:00:00 [kworker/0:1-cgroup_destroy]
+root       57899       2  0 17:06 ?        00:00:00 [kworker/0:3-events]
+root       57911       1  0 17:06 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+olegkri+   57925   56515  0 17:07 pts/1    00:00:00 ps -ef
+...
+
+
+_____________________________________________________________________________________
+RESTART AND FIND NEW PROCESS ID
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo systemctl restart sshd
+olegkrilov@olegkrilov-VirtualBox:~$ sudo systemctl status sshd
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2020-11-22 17:08:24 EET; 12s ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 57931 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+   Main PID: 57947 (sshd)
+      Tasks: 1 (limit: 2319)
+     Memory: 1.1M
+     CGroup: /system.slice/ssh.service
+             └─57947 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+
+ноя 22 17:08:24 olegkrilov-VirtualBox systemd[1]: Starting OpenBSD Secure Shell server...
+ноя 22 17:08:24 olegkrilov-VirtualBox sshd[57947]: Server listening on 0.0.0.0 port 22.
+ноя 22 17:08:24 olegkrilov-VirtualBox sshd[57947]: Server listening on :: port 22.
+ноя 22 17:08:24 olegkrilov-VirtualBox systemd[1]: Started OpenBSD Secure Shell server.
+olegkrilov@olegkrilov-VirtualBox:~$
+...
+root       57777       2  0 16:40 ?        00:00:00 [kworker/u2:2-events_unbound]
+root       57836       2  0 16:56 ?        00:00:00 [kworker/0:0-cgroup_destroy]
+root       57859       2  0 16:58 ?        00:00:00 [kworker/u2:1-events_power_efficient]
+root       57874       2  0 17:02 ?        00:00:00 [kworker/0:1-cgroup_destroy]
+root       57899       2  0 17:06 ?        00:00:00 [kworker/0:3-events]
+root       57947       1  0 17:08 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+root       57948       2  0 17:08 ?        00:00:00 [kworker/u2:0-events_unbound]
+olegkri+   57952   56515  0 17:09 pts/1    00:00:00 ps -ef
+
+____________________________________________________________________________________
+NOW SWITCH BACK WITH nano
+
+olegkrilov@olegkrilov-VirtualBox:~$ nano /etc/ssh/sshd_config
+
+...
+#IgnoreUserKnownHosts no
+# Don't read the user's ~/.rhosts and ~/.shosts files
+#IgnoreRhosts yes
+
+# To disable tunneled clear text passwords, change to no here!
+# PasswordAuthentication no
+#PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+...
+
+[^O] > [Yes] > [Enter]
+
+
+_____________________________________________________________________________________
+RELOAD
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo systemctl reload sshd
+olegkrilov@olegkrilov-VirtualBox:~$ sudo systemctl status sshd
+● ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2020-11-22 17:08:24 EET; 3min 38s ago
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+    Process: 57931 ExecStartPre=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+    Process: 57956 ExecReload=/usr/sbin/sshd -t (code=exited, status=0/SUCCESS)
+    Process: 57957 ExecReload=/bin/kill -HUP $MAINPID (code=exited, status=0/SUCCESS)
+   Main PID: 57947 (sshd)
+      Tasks: 1 (limit: 2319)
+     Memory: 1.3M
+     CGroup: /system.slice/ssh.service
+             └─57947 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+
+ноя 22 17:08:24 olegkrilov-VirtualBox systemd[1]: Starting OpenBSD Secure Shell server...
+ноя 22 17:08:24 olegkrilov-VirtualBox sshd[57947]: Server listening on 0.0.0.0 port 22.
+ноя 22 17:08:24 olegkrilov-VirtualBox sshd[57947]: Server listening on :: port 22.
+ноя 22 17:08:24 olegkrilov-VirtualBox systemd[1]: Started OpenBSD Secure Shell server.
+ноя 22 17:11:59 olegkrilov-VirtualBox systemd[1]: Reloading OpenBSD Secure Shell server.
+ноя 22 17:11:59 olegkrilov-VirtualBox sshd[57947]: Received SIGHUP; restarting.
+ноя 22 17:11:59 olegkrilov-VirtualBox systemd[1]: Reloaded OpenBSD Secure Shell server.
+ноя 22 17:11:59 olegkrilov-VirtualBox sshd[57947]: Server listening on 0.0.0.0 port 22.
+ноя 22 17:11:59 olegkrilov-VirtualBox sshd[57947]: Server listening on :: port 22.
+olegkrilov@olegkrilov-VirtualBox:~$
+
+
+_____________________________________________________________________________________
+SEE RESULTS
+
+olegkrilov@olegkrilov-VirtualBox:~$ ps -ef
+...
+olegkri+   56515   56514  0 15:57 pts/1    00:00:00 -bash
+olegkri+   56524   56515  0 15:58 pts/1    00:00:00 less
+root       57777       2  0 16:40 ?        00:00:00 [kworker/u2:2-events_unbound]
+root       57859       2  0 16:58 ?        00:00:00 [kworker/u2:1-events_power_efficient]
+root       57899       2  0 17:06 ?        00:00:00 [kworker/0:3-events]
+root       57947       1  0 17:08 ?        00:00:00 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+root       57948       2  0 17:08 ?        00:00:00 [kworker/u2:0-events_power_efficient]
+olegkri+   57962   56515  0 17:13 pts/1    00:00:00 ps -ef
+
+
+_____________________________________________________________________________________
+ON RESTART:
+	process will be completely restarted, new Process ID will be assigned
+	
+ON RELOAD:
+    process will be renewed, but Process ID will remain still
