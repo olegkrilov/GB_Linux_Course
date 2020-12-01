@@ -1,0 +1,67 @@
+4. Создать пользователя, обладающего возможностью выполнять действия от имени суперпользователя.
+
+
+
+Crate user
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~$ sudo adduser superuser
+[sudo] пароль для olegkrilov:
+Добавляется пользователь «superuser» ...
+Добавляется новая группа «superuser» (1001) ...
+Добавляется новый пользователь «superuser» (1001) в группу «superuser» ...
+Создаётся домашний каталог «/home/superuser» ...
+Копирование файлов из «/etc/skel» ...
+Новый пароль :
+Повторите ввод нового пароля :
+passwd: пароль успешно обновлён
+Изменение информации о пользователе superuser
+Введите новое значение или нажмите ENTER для выбора значения по умолчанию
+        Полное имя []: superuser
+        Номер комнаты []: 22
+        Рабочий телефон []: -
+        Домашний телефон []: -
+        Другое []: Other
+Данная информация корректна? [Y/n] y
+olegkrilov@olegkrilov-VirtualBox:~$ sudo usermod -aG sudo superuser
+olegkrilov@olegkrilov-VirtualBox:~$ less /etc/group
+...
+avahi:x:121:
+scanner:x:122:saned
+saned:x:123:
+nm-openvpn:x:124:
+whoopsie:x:125:
+colord:x:126:
+geoclue:x:127:
+pulse:x:128:
+pulse-access:x:129:
+gdm:x:130:
+lxd:x:131:olegkrilov
+olegkrilov:x:1000:
+sambashare:x:132:olegkrilov
+systemd-coredump:x:999:
+superuser:x:1001:
+(END)
+
+
+Update sudoers file
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~$ sudoedit /etc/sudoers
+
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+...
+# User privilege specification
+root    ALL=(ALL:ALL) ALL
+
+# Members of the admin group may gain root privileges
+%admin ALL=(ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) NOPASSWD:ALL
+
+# See sudoers(5) for more information on "#include" directives:
+
+#includedir /etc/sudoers.d
+

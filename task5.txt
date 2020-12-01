@@ -1,0 +1,77 @@
+5. * Создать группу developer и нескольких пользователей, входящих в неё. Создать директорию для совместной работы. 
+Сделать так, чтобы созданные одними пользователями файлы могли изменять другие пользователи этой группы.
+
+
+Create group "developer"
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~$ cd les5/
+olegkrilov@olegkrilov-VirtualBox:~/les5$ mkdir task5
+olegkrilov@olegkrilov-VirtualBox:~/les5$ cd task5
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo addgroup developer
+Добавляется группа «developer» (GID 1002) ...
+Готово.
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$
+
+
+Add users to group
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo useradd -ms /bin/bash dev_1
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo useradd -ms /bin/bash dev_2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo useradd -ms /bin/bash dev_3
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+...
+gnome-initial-setup:x:124:65534::/run/gnome-initial-setup/:/bin/false
+gdm:x:125:130:Gnome Display Manager:/var/lib/gdm3:/bin/false
+olegkrilov:x:1000:1000:olegkrilov,,,:/home/olegkrilov:/bin/bash
+systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+sshd:x:126:65534::/run/sshd:/usr/sbin/nologin
+superuser:x:1001:1001:superuser,22,-,-,Other:/home/superuser:/bin/bash
+dev_1:x:1002:1003::/home/dev_1:/bin/bash
+dev_2:x:1003:1004::/home/dev_2:/bin/bash
+dev_3:x:1004:1005::/home/dev_3:/bin/bash
+
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo usermod -aG developer dev_1
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo usermod -aG developer dev_2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo usermod -aG developer dev_3
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ cat /etc/group
+root:x:0:
+...
+olegkrilov:x:1000:
+sambashare:x:132:olegkrilov
+systemd-coredump:x:999:
+superuser:x:1001:
+developer:x:1002:dev_1,dev_2,dev_3
+dev_1:x:1003:
+dev_2:x:1004:
+dev_3:x:1005:
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$
+
+
+Create shared folder and assign to the developers group
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ mkdir shared_folder
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ ls -li
+итого 4
+141523 drwxrwxr-x 2 olegkrilov olegkrilov 4096 дек  1 19:28 shared_folder
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ chgrp developer shared_folder/
+chgrp: изменение группы для 'shared_folder/': Операция не позволена
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo chgrp developer shared_folder/
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ ls-li
+ls-li: команда не найдена
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ ls -li
+итого 4
+141523 drwxrwxr-x 2 olegkrilov developer 4096 дек  1 19:28 shared_folder
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$
+
+Add setuid flag
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo chmod g+s shared_folder/
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ ls -li
+итого 4
+141523 drwxrwsr-x 2 olegkrilov developer 4096 дек  1 19:28 shared_folder
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$
+

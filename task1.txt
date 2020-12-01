@@ -1,0 +1,63 @@
+Task 1
+1. Создать файл file1 и наполнить его произвольным содержимым. 
+Скопировать его в file2. Создать символическую ссылку file3 на file1. 
+Создать жёсткую ссылку file4 на file1. Посмотреть, какие inode у файлов. 
+Удалить file1. Что стало с остальными созданными файлами? 
+Попробовать вывести их на экран.
+
+
+Create folder for lesson and task
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~$ ls
+ Видео       Загрузки      Музыка         'Рабочий стол'
+ Документы   Изображения   Общедоступные   Шаблоны
+olegkrilov@olegkrilov-VirtualBox:~$ mkdir les5
+olegkrilov@olegkrilov-VirtualBox:~$ cd les5
+olegkrilov@olegkrilov-VirtualBox:~/les5$ mkdir task1
+olegkrilov@olegkrilov-VirtualBox:~/les5$ cd task1
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ ls
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$
+
+
+Create required files and observe their inode property
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ echo "And when the Lamb opened the seventh seal there was only the silent above the sky..." > file1
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ cp file1 file2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ ls -l
+141318 -rw-rw-r-- 2 olegkrilov olegkrilov 85 дек  1 17:49 file1
+141510 -rw-rw-r-- 1 olegkrilov olegkrilov 85 дек  1 17:49 file2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ ln -s file1 file3
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ ln file1 file4
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ ls -li
+итого 12
+141318 -rw-rw-r-- 2 olegkrilov olegkrilov 85 дек  1 17:49 file1
+141510 -rw-rw-r-- 1 olegkrilov olegkrilov 85 дек  1 17:49 file2
+141511 lrwxrwxrwx 1 olegkrilov olegkrilov  5 дек  1 17:55 file3 -> file1
+141318 -rw-rw-r-- 2 olegkrilov olegkrilov 85 дек  1 17:49 file4
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$
+
+
+Remove file1, watch results
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ rm file1
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ ls -l
+итого 8
+-rw-rw-r-- 1 olegkrilov olegkrilov 85 дек  1 17:49 file2
+lrwxrwxrwx 1 olegkrilov olegkrilov  5 дек  1 17:55 file3 -> file1
+-rw-rw-r-- 1 olegkrilov olegkrilov 85 дек  1 17:49 file4
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ ca file2
+ca: команда не найдена
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ cat file2
+And when the Lamb opened the seventh seal there was only the silent above the sky...
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ cat file4
+And when the Lamb opened the seventh seal there was only the silent above the sky...
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$ cat file3
+cat: file3: Нет такого файла или каталога
+olegkrilov@olegkrilov-VirtualBox:~/les5/task1$
+
+
+RESULTS:
+after file1 was removed we can still read its copy (file2) and its hardlink (file4),
+however file3 (softlink) is can not be used anymore, because the target file is missing
