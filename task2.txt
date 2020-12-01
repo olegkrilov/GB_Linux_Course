@@ -1,0 +1,56 @@
+2. Дать созданным файлам другие, произвольные имена. Создать новую символическую ссылку. 
+Переместить ссылки в другую директорию.
+
+
+Create separate folder and required files 
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les5$ mkdir task2
+olegkrilov@olegkrilov-VirtualBox:~/les5$ cd task2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ echo "# Ich heiße Tweedledee" > Tweedledee   
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ echo "# Me llamo Tweedledum" > Tweedledum
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ echo "# Je m'appelle Humpty-Dumpty" > Humpty-Dumpty
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ ls -li
+итого 12
+141515 -rw-rw-r-- 1 olegkrilov olegkrilov 29 дек  1 18:11 Humpty-Dumpty
+141513 -rw-rw-r-- 1 olegkrilov olegkrilov 24 дек  1 18:08 Tweedledee
+141514 -rw-rw-r-- 1 olegkrilov olegkrilov 22 дек  1 18:09 Tweedledum
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$
+
+
+Create links and then move them into some folder
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ ln -s Tweedledee Tweedledee_LINK
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ ln Tweedledum Tweedledum_HARDLINK
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ ls -li
+итого 16
+141515 -rw-rw-r-- 1 olegkrilov olegkrilov 29 дек  1 18:11 Humpty-Dumpty
+141513 -rw-rw-r-- 1 olegkrilov olegkrilov 24 дек  1 18:08 Tweedledee
+141516 lrwxrwxrwx 1 olegkrilov olegkrilov 10 дек  1 18:14 Tweedledee_LINK -> Tweedledee
+141514 -rw-rw-r-- 2 olegkrilov olegkrilov 22 дек  1 18:09 Tweedledum
+141514 -rw-rw-r-- 2 olegkrilov olegkrilov 22 дек  1 18:09 Tweedledum_HARDLINK
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ mkdir task2-inner
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ mv -t task2-inner/ Tweedledee_LINK Tweedledum_HARDLINK
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ ls -li
+итого 16
+141515 -rw-rw-r-- 1 olegkrilov olegkrilov   29 дек  1 18:11 Humpty-Dumpty
+141517 drwxrwxr-x 2 olegkrilov olegkrilov 4096 дек  1 18:17 task2-inner
+141513 -rw-rw-r-- 1 olegkrilov olegkrilov   24 дек  1 18:08 Tweedledee
+141514 -rw-rw-r-- 2 olegkrilov olegkrilov   22 дек  1 18:09 Tweedledum
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ ls -li task2-inner/
+итого 4
+141516 lrwxrwxrwx 1 olegkrilov olegkrilov 10 дек  1 18:14 Tweedledee_LINK -> Tweedledee
+141514 -rw-rw-r-- 2 olegkrilov olegkrilov 22 дек  1 18:09 Tweedledum_HARDLINK
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$
+
+
+Observe results
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ cat task2-inner/Tweedledee_LINK
+cat: task2-inner/Tweedledee_LINK: Нет такого файла или каталога
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$ cat task2-inner/Tweedledum_HARDLINK
+# Me llamo Tweedledum
+olegkrilov@olegkrilov-VirtualBox:~/les5/task2$
+

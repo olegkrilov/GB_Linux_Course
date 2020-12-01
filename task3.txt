@@ -1,0 +1,67 @@
+3. Создать два произвольных файла. Первому присвоить права на чтение и запись 
+для владельца и группы, только на чтение — для всех. Второму присвоить права 
+на чтение и запись только для владельца. Сделать это в численном и символьном виде.
+
+
+Create folder and required files
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les5$ mkdir task3
+olegkrilov@olegkrilov-VirtualBox:~/les5$ cd task3
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ echo "On a dark desert highway / Cool wind in my hair / Warm smell of colitas / Rising up through the air" > chapter1
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ echo "Up ahead in the distance / I saw a shimmering light / My head grew heavy and my sight grew dim / I had to stop for the night" > chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ ls -li
+итого 8
+141519 -rw-rw-r-- 1 olegkrilov olegkrilov 100 дек  1 18:38 chapter1
+141520 -rw-rw-r-- 1 olegkrilov olegkrilov 125 дек  1 18:39 chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$
+
+
+Clear rights for the files
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ ls -li
+итого 8
+141519 -rw-rw-r-- 1 olegkrilov olegkrilov 100 дек  1 18:38 chapter1
+141520 -rw-rw-r-- 1 olegkrilov olegkrilov 125 дек  1 18:39 chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ chmod 000 chapter*
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ ls -li
+итого 8
+141519 ---------- 1 olegkrilov olegkrilov 100 дек  1 18:38 chapter1
+141520 ---------- 1 olegkrilov olegkrilov 125 дек  1 18:39 chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$
+
+
+Set required right with chars mode
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ chmod ug+rw,o+r chapter1
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ chmod u+rw chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ ls -li
+итого 8
+141519 -rw-rw-r-- 1 olegkrilov olegkrilov 100 дек  1 18:38 chapter1
+141520 -rw------- 1 olegkrilov olegkrilov 125 дек  1 18:39 chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$
+
+
+Clear rights again and now set rights with digits mode
+_________________________________________________________________________
+
+141519 -rw-rw-r-- 1 olegkrilov olegkrilov 100 дек  1 18:38 chapter1
+141520 -rw-rw-r-- 1 olegkrilov olegkrilov 125 дек  1 18:39 chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ chmod 000 chapter*
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ ls -li
+итого 8
+141519 ---------- 1 olegkrilov olegkrilov 100 дек  1 18:38 chapter1
+141520 ---------- 1 olegkrilov olegkrilov 125 дек  1 18:39 chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ cat chapter1
+cat: chapter1: Отказано в доступе
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ chmod 664 chapter1
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ chmod 600 chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$ ls -li
+итого 8
+141519 -rw-rw-r-- 1 olegkrilov olegkrilov 100 дек  1 18:38 chapter1
+141520 -rw------- 1 olegkrilov olegkrilov 125 дек  1 18:39 chapter2
+olegkrilov@olegkrilov-VirtualBox:~/les5/task3$
+
+
+

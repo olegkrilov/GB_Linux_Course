@@ -1,0 +1,40 @@
+7. * Создать директорию, в которой есть несколько файлов. Сделать так, чтобы открыть файлы 
+можно было, только зная имя файла, а через ls список файлов посмотреть было нельзя.
+
+
+
+Create new folder and required files
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ mkdir restricted-folder
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ ls -li
+итого 8
+141524 drwxrwxr-x 2 olegkrilov olegkrilov 4096 дек  1 20:22 restricted-folder
+141523 drwxrwsr-t 2 olegkrilov developer  4096 дек  1 19:28 shared_folder
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ echo "@@@@First file content" > fileA
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ echo "####Second file content" > fileB
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ echo "$$$$Third file content" > fileC
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ mv -t restricted-folder/ fileA fileB fileC
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ ls -li restricted-folder/
+итого 12
+141525 -rw-rw-r-- 1 olegkrilov olegkrilov 23 дек  1 20:25 fileA
+141526 -rw-rw-r-- 1 olegkrilov olegkrilov 24 дек  1 20:26 fileB
+141527 -rw-rw-r-- 1 olegkrilov olegkrilov 27 дек  1 20:26 fileC
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$
+
+
+Close possibility to read files in the target folder
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ sudo chmod a-r restricted-folder/
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ ls -li restricted-folder/
+ls: невозможно открыть каталог 'restricted-folder/': Отказано в доступе
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ cat restricted-folder/fileA
+@@@@First file content
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ cat restricted-folder/fileB
+####Second file content
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$ cat restricted-folder/fileC
+43564356Third file content
+olegkrilov@olegkrilov-VirtualBox:~/les5/task5$
+
+
+
