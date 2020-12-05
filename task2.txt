@@ -1,0 +1,82 @@
+2. Создать однострочный скрипт, который создаст директории для нескольких годов (2010–2017), 
+в них — поддиректории для месяцев (от 01 до 12), и в каждый из них запишет несколько файлов 
+с произвольными записями. Например, 001.txt, содержащий текст «Файл 001», 
+002.txt с текстом «Файл 002» и т. д.
+
+
+Create task folder and script
+______________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ cd ..
+olegkrilov@olegkrilov-VirtualBox:~/les6$ mkdir task2
+olegkrilov@olegkrilov-VirtualBox:~/les6$ cd task2
+olegkrilov@olegkrilov-VirtualBox:~/les6/task2$ touch years-maker.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task2$ nano years-maker.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task2$ cat years-maker.sh
+#!/bin/bash
+FROM=${1:-2010}
+TO=${2:-2017}
+FILE_NAME=${3:-some_file}
+
+echo 'Creating folders and files...'
+
+for (( YEAR=$FROM; YEAR<=$TO; YEAR++ ))
+do
+  mkdir $YEAR
+  for MONTH in {1..12}
+  do
+    mkdir $YEAR/$MONTH
+    echo $YEAR/$MONTH > $YEAR/$MONTH/$FILE_NAME
+  done
+done
+
+echo 'Done!'
+echo 'Now test it'
+
+for (( YEAR=$FROM; YEAR<=$TO; YEAR++ ))
+do
+  for MONTH in {1..12}
+  do
+    cat $YEAR/$MONTH/$FILE_NAME
+  done
+done
+
+
+Test & run it!
+______________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task2$ chmod +x years-maker.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task2$ ./years-maker.sh
+Creating folders and files...
+Done!
+Now test it
+2010/1
+2010/2
+2010/3
+2010/4
+2010/5
+....
+2017/8
+2017/9
+2017/10
+2017/11
+2017/12
+olegkrilov@olegkrilov-VirtualBox:~/les6/task2$ ls -li
+итого 36
+138752 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 13:52 2010
+141682 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 13:52 2011
+292852 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 13:52 2012
+535157 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 13:52 2013
+ 12605 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 13:52 2014
+ 12630 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 13:52 2015
+ 12655 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 13:52 2016
+ 12680 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 13:52 2017
+138746 -rwxrwxr-x  1 olegkrilov olegkrilov  424 дек  5 13:52 years-maker.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task2$
+
+
+
+
+
+
+

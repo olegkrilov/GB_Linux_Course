@@ -1,0 +1,66 @@
+1. Написать скрипт, который удаляет из текстового файла пустые строки
+и заменяет маленькие символы на большие. Воспользуйтесь tr или SED.
+
+
+Create folder and file for the task
+______________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~$ cd les6
+olegkrilov@olegkrilov-VirtualBox:~/les6$ ls -li
+итого 24
+141317 -rwxrwxr-x 1 olegkrilov olegkrilov  71 дек  1 22:34 classwork.sh
+136552 -rwxrwxr-x 1 olegkrilov olegkrilov  42 дек  2 08:36 for-in-statement.sh
+138613 -rwxrwxr-x 1 olegkrilov olegkrilov 204 дек  2 08:21 if-else-statement.sh
+141881 -rwxrwxr-x 1 olegkrilov olegkrilov  25 дек  2 08:11 math.sh
+131132 -rwxrwxr-x 1 olegkrilov olegkrilov 103 дек  2 09:01 reg-exp.sh
+137596 -rwxrwxr-x 1 olegkrilov olegkrilov  79 дек  2 08:39 while-statement.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6$ mkdir task1
+olegkrilov@olegkrilov-VirtualBox:~/les6$ cd task1
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ touch 'some-text-file'
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ nano some-text-file
+# Added text to file
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ cat some-text-file
+...
+If you can look into the seeds of time,
+And say which grain will grow and which will not.
+...
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$
+
+
+Wright & run script
+______________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ touch some-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ nano some-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ cat some-script.sh
+#!/bin/bash
+echo 'Initial content:'
+cat some-text-file
+echo '---------------------------------------'
+echo 'First: replace all chars with uppercase'
+tr '[:lower:]' '[:upper:]' < some-text-file > some-text-file-UPPERCASE
+cat some-text-file-UPPERCASE
+echo '---------------------------------------'
+echo 'Now replace "newline"symbols'
+tr "\n" "\t" < some-text-file-UPPERCASE > some-text-file-ONELINE
+cat some-text-file-ONELINE
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ chmod +x some-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$ ./some-script.sh
+Initial content:
+...
+If you can look into the seeds of time,
+And say which grain will grow and which will not.
+...
+---------------------------------------
+First: replace all chars with uppercase
+...
+IF YOU CAN LOOK INTO THE SEEDS OF TIME,
+AND SAY WHICH GRAIN WILL GROW AND WHICH WILL NOT.
+...
+---------------------------------------
+Now replace "newline"symbols
+...     IF YOU CAN LOOK INTO THE SEEDS OF TIME, AND SAY WHICH GRAIN WILL GROW AND WHICH WILL NOT.       ...
+olegkrilov@olegkrilov-VirtualBox:~/les6/task1$
+
+

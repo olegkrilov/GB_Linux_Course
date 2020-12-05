@@ -1,0 +1,31 @@
+4. Используя grep, проанализировать файл /var/log/syslog, отобрав события на своё усмотрение.
+
+
+Create folder & script inside it
+______________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6$ mkdir task4
+olegkrilov@olegkrilov-VirtualBox:~/les6$ cd task4
+olegkrilov@olegkrilov-VirtualBox:~/les6/task4$ touch syslog-term-analyzer.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task4$ chmod +x syslog-term-analyzer.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task4$ nano syslog-term-analyzer.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task4$ cat syslog-term-analyzer.sh
+#!/bin/bash
+SEARCH_KEY=${1:-SIGRTMIN}
+
+echo 'Observe syslogs filtered by' $SEARCH_KEY
+cat /var/log/syslog | grep $SEARCH_KEY
+
+
+Run script
+______________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task4$ ./syslog-term-analyzer.sh
+Observe syslogs filtered by SIGRTMIN
+Dec  5 10:03:42 olegkrilov-VirtualBox systemd[1]: Received SIGRTMIN+21 from PID 297 (plymouthd).
+Dec  5 10:04:10 olegkrilov-VirtualBox systemd[1]: Received SIGRTMIN+21 from PID 297 (plymouthd).
+Dec  5 12:39:25 olegkrilov-VirtualBox systemd[1]: Received SIGRTMIN+20 from PID 298 (plymouthd).
+Dec  5 12:39:25 olegkrilov-VirtualBox systemd[1]: Received SIGRTMIN+20 from PID 298 (plymouthd).
+Dec  5 12:39:32 olegkrilov-VirtualBox systemd[1]: Received SIGRTMIN+21 from PID 298 (plymouthd).
+Dec  5 12:40:11 olegkrilov-VirtualBox systemd[1]: Received SIGRTMIN+21 from PID 298 (plymouthd).
+olegkrilov@olegkrilov-VirtualBox:~/les6/task4$
