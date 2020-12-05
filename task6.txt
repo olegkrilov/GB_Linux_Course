@@ -1,0 +1,57 @@
+6. * Написать скрипт, делающий архивную копию каталога etc, и прописать задание в crontab.
+
+
+Create folder and script
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task5$ cd ..
+olegkrilov@olegkrilov-VirtualBox:~/les6$ mkdir task6
+olegkrilov@olegkrilov-VirtualBox:~/les6$ cd task6
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ touch archive-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ chmod +x archive-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ nano archive-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ cat archive-script.sh
+#!/bin/bash
+echo 'Creating backup...'
+zip -r backup.zip /etc
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$
+
+
+Test it
+_________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ ./archive-script.sh
+Creating backup...
+        zip warning: name not matched: /etc/network/if-post-down.d/avahi-daemon
+        zip warning: name not matched: /etc/pulse/client.conf.d/01-enable-autospawn.conf
+  adding: etc/ (stored 0%)
+  adding: etc/libaudit.conf (deflated 34%)
+  adding: etc/profile.d/ (stored 0%)
+  adding: etc/profile.d/bash_completion.sh (deflated 51%)
+  ...
+  
+ adding: etc/mailcap.order (deflated 54%)
+  adding: etc/vulkan/ (stored 0%)
+  adding: etc/vulkan/implicit_layer.d/ (stored 0%)
+  adding: etc/vulkan/icd.d/ (stored 0%)
+  adding: etc/vulkan/explicit_layer.d/ (stored 0%)
+  adding: etc/bindresvport.blacklist (deflated 35%)
+
+zip warning: Not all files were readable
+  files/entries read:  2734 (20M bytes)  skipped:  26 (27K bytes)
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ ls -li
+итого 9088
+155166 -rwxrwxr-x 1 olegkrilov olegkrilov      49 дек  5 14:53 archive-script.sh
+139580 -rw-rw-r-- 1 olegkrilov olegkrilov 9298523 дек  5 14:54 backup.zip
+
+
+Add cron task
+_________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ touch crontab-task.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ chmod +x crontab-task.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ nano crontab-task.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$ cat crontab-task.sh
+#!/bin/bash
+crontab -l | {cat; echo "59 24 * * * /home/olegkrilov/les6/task6/archive-script.sh"} | crontab -
+olegkrilov@olegkrilov-VirtualBox:~/les6/task6$
+

@@ -1,0 +1,25 @@
+5. Создать разовое задание на перезагрузку операционной системы, используя at.
+
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task4$ cd ..
+olegkrilov@olegkrilov-VirtualBox:~/les6$ mkdir task5
+olegkrilov@olegkrilov-VirtualBox:~/les6$ cd task5
+olegkrilov@olegkrilov-VirtualBox:~/les6/task5$ touch reboot-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task5$ chmod +x reboot-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task5$ nano reboot-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task5$ cat reboot-script.sh
+#!/bin/bash
+echo 'Set reboot task'
+echo sudo reboot | at 14:40 12/05/2020
+olegkrilov@olegkrilov-VirtualBox:~/les6/task5$ ./reboot-script.sh
+Set reboot task
+warning: commands will be executed using /bin/sh
+job 4 at Sat Dec  5 14:40:00 2020
+olegkrilov@olegkrilov-VirtualBox:~/les6/task5$
+
+
+AFTER A WHILE:
+Connection to 192.168.197.26 closed by remote host.
+Connection to 192.168.197.26 closed.
+
+

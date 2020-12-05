@@ -1,0 +1,103 @@
+3. * Использовать команду AWK на вывод длинного списка каталога, чтобы отобразить
+только права доступа к файлам. Затем отправить в конвейере этот вывод на sort и uniq,
+чтобы отфильтровать все повторяющиеся строки.
+
+
+Copy files & folders from previous task
+______________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task2$ cd ..
+olegkrilov@olegkrilov-VirtualBox:~/les6$ cp -r task2 task3
+olegkrilov@olegkrilov-VirtualBox:~/les6$ ls -li
+итого 36
+141317 -rwxrwxr-x  1 olegkrilov olegkrilov   71 дек  1 22:34 classwork.sh
+136552 -rwxrwxr-x  1 olegkrilov olegkrilov   42 дек  2 08:36 for-in-statement.sh
+138613 -rwxrwxr-x  1 olegkrilov olegkrilov  204 дек  2 08:21 if-else-statement.sh
+141881 -rwxrwxr-x  1 olegkrilov olegkrilov   25 дек  2 08:11 math.sh
+131132 -rwxrwxr-x  1 olegkrilov olegkrilov  103 дек  2 09:01 reg-exp.sh
+138741 drwxrwxr-x  2 olegkrilov olegkrilov 4096 дек  5 13:18 task1
+138744 drwxrwxr-x 10 olegkrilov olegkrilov 4096 дек  5 13:52 task2
+155110 drwxrwxr-x 10 olegkrilov olegkrilov 4096 дек  5 14:00 task3
+137596 -rwxrwxr-x  1 olegkrilov olegkrilov   79 дек  2 08:39 while-statement.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6$ rm task3/years-maker.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6$ ls -li task3
+итого 32
+155135 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2010
+293357 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2011
+ 12707 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2012
+ 12732 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2013
+155111 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2014
+293043 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2015
+293315 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2016
+539409 drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2017
+olegkrilov@olegkrilov-VirtualBox:~/les6$
+
+
+Wright script
+______________________________________________________________________
+
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task3$ nano task3-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task3$ chmod +x task3-script.sh
+olegkrilov@olegkrilov-VirtualBox:~/les6/task3$ cat task3-script.sh
+#!/bin/bash
+echo 'Show all existing'
+ls -l
+echo ''
+echo 'Now show only first column'
+ls -l | awk '{print $1}'
+echo ''
+echo 'Now show sorted'
+ls -l | awk '{print $1}' | sort
+echo ''
+echo 'Now show sorted and unique'
+ls -l | awk '{print $1}' | sort | uniq
+olegkrilov@olegkrilov-VirtualBox:~/les6/task3$
+
+
+
+Now test & run!
+______________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les6/task3$ ./task3-script.sh
+Show all existing
+итого 36
+drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2010
+drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2011
+drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2012
+drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2013
+drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2014
+drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2015
+drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2016
+drwxrwxr-x 14 olegkrilov olegkrilov 4096 дек  5 14:00 2017
+-rwxrwxr-x  1 olegkrilov olegkrilov  242 дек  5 14:07 task3-script.sh
+
+Now show only first column
+итого
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+-rwxrwxr-x
+
+Now show sorted
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+drwxrwxr-x
+-rwxrwxr-x
+итого
+
+Now show sorted and unique
+drwxrwxr-x
+-rwxrwxr-x
+итого
+olegkrilov@olegkrilov-VirtualBox:~/les6/task3$ ^C
