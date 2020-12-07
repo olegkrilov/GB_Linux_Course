@@ -1,0 +1,79 @@
+4. * Настроить проброс портов локально с порта 80 на порт 8080.
+
+
+olegkrilov@olegkrilov-VirtualBox:~/les7$ mkdir task4
+olegkrilov@olegkrilov-VirtualBox:~/les7$ cp task3/my-iptables.rules task4/port-forwarding.rules
+olegkrilov@olegkrilov-VirtualBox:~/les7$ cd task4
+olegkrilov@olegkrilov-VirtualBox:~/les7/task4$ nano port-forwarding.rules
+olegkrilov@olegkrilov-VirtualBox:~/les7/task4$ cat port-forwarding.rules
+# Defaults
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
+# Local loop
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+
+# ICMP
+iptables -A INPUT -p icmp -j ACCEPT
+iptables -A OUTPUT -p icmp -j ACCEPT
+
+# Dynamic ports
+iptables -A OUTPUT -p TCP -m tcp --sport 32768:61000 -j ACCEPT
+iptables -A OUTPUT -p UDP -m udp --sport 32768:61000 -j ACCEPT
+
+# Allow requested ports only
+iptables -A INPUT -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allow port 22 (ssh)
+iptables -A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp -m tcp --sport 22 -j ACCEPT
+
+# Allow port 80 (http)
+iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+iptables -A OUTPUT -p tcp -m tcp --sport 80 -j ACCEPT
+
+olegkrilov@olegkrilov-VirtualBox:~/les7/task4$ touch lets-rock.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task4$ chmod +x lets-rock.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task4$ nano lets-rock.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task4$ cat lets-rock.sh
+#!/bin/bash
+echo 'Port Forwarding Script'
+sed -i "s/80/8080/g" port-forwarding.rules
+sed -i "s/iptables/sudo iptables/g" port-forwarding.rules
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo chmod +x port-forwarding.rules
+./port-forwarding.rules
+cat port-forwarding.rules
+olegkrilov@olegkrilov-VirtualBox:~/les7/task4$ ./lets-rock.sh
+Port Forwarding save
+# Defaults
+sudo iptables -P INPUT DROP
+sudo iptables -P OUTPUT DROP
+sudo iptables -P FORWARD DROP
+
+# Local loop
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A OUTPUT -o lo -j ACCEPT
+
+# ICMP
+sudo iptables -A INPUT -p icmp -j ACCEPT
+sudo iptables -A OUTPUT -p icmp -j ACCEPT
+
+# Dynamic ports
+sudo iptables -A OUTPUT -p TCP -m tcp --sport 32768:61000 -j ACCEPT
+sudo iptables -A OUTPUT -p UDP -m udp --sport 32768:61000 -j ACCEPT
+
+# Allow requested ports only
+sudo iptables -A INPUT -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -A INPUT -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allow port 22 (ssh)
+sudo iptables -A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -m tcp --sport 22 -j ACCEPT
+
+# Allow port 8080 (http)
+sudo iptables -A INPUT -p tcp -m tcp --dport 8080 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -m tcp --sport 8080 -j ACCEPT

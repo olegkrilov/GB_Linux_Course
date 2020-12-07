@@ -1,0 +1,101 @@
+1. Подключить репозиторий с nginx любым удобным способом, установить nginx и
+потом удалить nginx, используя утилиту dpkg.
+
+
+INSTALL NGINX
+_____________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les7$ mkdir task1
+olegkrilov@olegkrilov-VirtualBox:~/les7$ cd task1
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ touch nginx-install.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ nano nginx-install.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ cat nginx-install.sh
+#!/bin/bash
+echo '---------------------------------------------'
+echo 'Add repository'
+sudo apt-add-repository ppa:hda-me/nginx-stable
+echo '---------------------------------------------'
+echo 'Update packages'
+sudo apt-get update
+echo '---------------------------------------------'
+echo 'Now install nginx'
+sudo apt-get install nginx
+echo '---------------------------------------------'
+echo 'Done'
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ sudo chmod +x nginx-install.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ sudo ./nginx-install.sh
+
+---------------------------------------------
+Add repository
+ Nginx packages based on mainline version, since nginx 1.11.5.
+
+Try snap package on distributions outside Ubuntu:
+https://snapcraft.io/nginx-hda-bundle
+
+You can add and install any available module with:
+<A LOT OF ROWS ...>
+<A LOT OF ROWS ...>
+<A LOT OF ROWS ...>
+sudo apt-add-repository ppa:hda-me/nginx-stable
+Пол:15 http://ua.archive.ubuntu.com/ubuntu focal-updates/universe amd64 DEP-11 Metadata [205 kB]
+Пол:16 http://ua.archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 DEP-11 Metadata [2.468 B]
+Пол:17 http://ua.archive.ubuntu.com/ubuntu focal-backports/universe amd64 DEP-11 Metadata [1.768 B]
+Чтение списков пакетов… Готово
+---------------------------------------------
+Update packages
+Сущ:1 http://security.ubuntu.com/ubuntu focal-security InRelease
+Сущ:2 https://download.docker.com/linux/ubuntu focal InRelease
+Сущ:3 http://ua.archive.ubuntu.com/ubuntu focal InRelease
+Сущ:4 http://ua.archive.ubuntu.com/ubuntu focal-updates InRelease
+Сущ:5 http://ua.archive.ubuntu.com/ubuntu focal-backports InRelease
+Игн:6 http://ppa.launchpad.net/hda-me/nginx-stable/ubuntu focal InRelease
+Сущ:7 http://ppa.launchpad.net/nginx/stable/ubuntu focal InRelease
+Ошб:8 http://ppa.launchpad.net/hda-me/nginx-stable/ubuntu focal Release
+  404  Not Found [IP: 91.189.95.83 80]
+Чтение списков пакетов… Готово
+E: Репозиторий «http://ppa.launchpad.net/hda-me/nginx-stable/ubuntu focal Release» не содержит файла Release.
+N: Обновление из этого репозитория нельзя выполнить безопасным способом, поэтому по умолчанию он отключён.
+N: Информацию о создании репозитория и настройках пользователя смотрите в справочной странице apt-secure(8).
+---------------------------------------------
+Now install nginx
+Чтение списков пакетов… Готово
+Построение дерева зависимостей
+Чтение информации о состоянии… Готово
+Следующий пакет устанавливался автоматически и больше не требуется:
+  libfprint-2-tod1
+Для его удаления используйте «sudo apt autoremove».
+Будут установлены следующие дополнительные пакеты:
+  libnginx-mod-http-image-filter libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream
+  libnginx-mod-stream-geoip nginx-core
+<A LOT OF ROWS ...>
+<A LOT OF ROWS ...>
+<A LOT OF ROWS ...>
+Обрабатываются триггеры для systemd (245.4-4ubuntu3.3) …
+Обрабатываются триггеры для man-db (2.9.1-1) …
+Обрабатываются триггеры для nginx-core (1.18.0-3ubuntu1+focal2) …
+Triggering nginx reload ...
+---------------------------------------------
+Done
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ nginx --help
+nginx: invalid option: "-"
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ nginx -v
+nginx version: nginx/1.18.0 (Ubuntu)
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$
+
+
+REMOVE NGINX
+_____________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ touch nginx-uninstall.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ chmod +x nginx-uninstall.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ nano nginx-uninstall.sh
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ cat nginx-uninstall.sh
+#!/bin/bash
+echo 'Remove nginx'
+sudo dpkg -r nginx
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ ./nginx-uninstall.sh
+Remove nginx
+(Чтение базы данных … на данный момент установлено 164045 файлов и каталогов.)
+Удаляется nginx (1.18.0-3ubuntu1+focal2) …
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$ nginx -v
+-bash: /usr/sbin/nginx: Нет такого файла или каталога
+olegkrilov@olegkrilov-VirtualBox:~/les7/task1$
+

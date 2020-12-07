@@ -1,0 +1,38 @@
+3. Настроить iptables: разрешить подключения только на 22-й и 80-й порты.
+
+
+olegkrilov@olegkrilov-VirtualBox:~/les7/task2$ cd ..
+olegkrilov@olegkrilov-VirtualBox:~/les7$ mkdir task3
+olegkrilov@olegkrilov-VirtualBox:~/les7$ cd task3
+olegkrilov@olegkrilov-VirtualBox:~/les7/task3$ touch my-iptables.rules
+olegkrilov@olegkrilov-VirtualBox:~/les7/task3$ nano my-iptables.rules
+olegkrilov@olegkrilov-VirtualBox:~/les7/task3$ cat my-iptables.rules
+# Defaults
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
+# Local loop
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -o lo -j ACCEPT
+
+# ICMP
+iptables -A INPUT -p icmp -j ACCEPT
+iptables -A OUTPUT -p icmp -j ACCEPT
+
+# Dynamic ports
+iptables -A OUTPUT -p TCP -m tcp --sport 32768:61000 -j ACCEPT
+iptables -A OUTPUT -p UDP -m udp --sport 32768:61000 -j ACCEPT
+
+# Allow requested ports only
+iptables -A INPUT -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allow port 22 (ssh)
+iptables -A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp -m tcp --sport 22 -j ACCEPT
+
+# Allow port 80 (http)
+iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+iptables -A OUTPUT -p tcp -m tcp --sport 80 -j ACCEPT
+olegkrilov@olegkrilov-VirtualBox:~/les7/task3$
