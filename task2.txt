@@ -1,0 +1,35 @@
+2. Установить пакет на свой выбор, используя snap.
+
+
+olegkrilov@olegkrilov-VirtualBox:~/les7/task2$ snap find hello
+Название                       Версия                       Издатель             Примечание  Описание
+hello                          2.10                         canonical✓           -           GNU Hello, the "hello world" snap
+hello-world                    6.4                          canonical✓           -           The 'hello-world' of snaps
+gamecake                       V20.861+git17.d1dede1-dirty  xriss                -           a single exe cross platform Lua game engine
+rfid-app                       0.1.0                        pt789                -           hello-world
+lee                            2.10                         leeboby              -           GNU Hello, the "hello world" snap
+hallo-carol                    myfirstsnap                  carol-kelsch         -           GNU Hello, the "hello world" snap
+<A LOT OF ROWS...>
+<A LOT OF ROWS...>
+<A LOT OF ROWS...>
+<A LOT OF ROWS...>
+hello-larszauberer             2.10                         larszauberer         -           GNU Hello, the "hello world" snap
+hello-salvius                  2.10                         salvius              -           GNU Hello, the "hello world" snap
+hello-vecoder                  2.10                         vecoder              -           GNU Hello, the "hello world" snap
+hello-test-delta               2.10d                        michaelnelson        -           GNU Hello, the "hello world" snap
+olegkrilov@olegkrilov-VirtualBox:~/les7/task2$ sudo snap install hello-world
+hello-world 6.4 от Canonical✓ установлен
+olegkrilov@olegkrilov-VirtualBox:~/les7/task2$ snap list
+Название            Версия              Правка  Канал            Издатель    Примечание
+core                16-2.48             10444   latest/stable    canonical✓  core
+core18              20200929            1932    latest/stable    canonical✓  base
+gnome-3-34-1804     0+git.3556cb3       60      latest/stable/…  canonical✓  -
+gtk-common-themes   0.1-50-gf7627e4     1514    latest/stable/…  canonical✓  -
+gtk2-common-themes  0.1                 13      latest/stable    canonical✓  -
+hello-world         6.4                 29      latest/stable    canonical✓  -
+p7zip-desktop       16.02.2             220     latest/stable    ernytech    -
+snap-store          3.38.0-55-geb45541  498     latest/stable/…  canonical✓  -
+snapd               2.48.1              10492   latest/stable    canonical✓  snapd
+olegkrilov@olegkrilov-VirtualBox:~/les7/task2$
+
+
