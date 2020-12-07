@@ -1,0 +1,117 @@
+2. Запустить контейнер с Ubuntu.
+
+
+First, search ubuntu pkg
+__________________________________________________________________________
+olegkrilov@olegkrilov-VirtualBox:~/les8/task1$ docker search ubuntu
+NAME                                                      DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+ubuntu                                                    Ubuntu is a Debian-based Linux operating sys…   11596               [OK]
+dorowu/ubuntu-desktop-lxde-vnc                            Docker image to provide HTML5 VNC interface …   479                                     [OK]
+websphere-liberty                                         WebSphere Liberty multi-architecture images …   264                 [OK]
+rastasheep/ubuntu-sshd                                    Dockerized SSH service, built on top of offi…   250                                     [OK]
+consol/ubuntu-xfce-vnc                                    Ubuntu container with "headless" VNC session…   228                                     [OK]
+ubuntu-upstart                                            Upstart is an event-based replacement for th…   109                 [OK]
+neurodebian                                               NeuroDebian provides neuroscience research s…   76                  [OK]
+1and1internet/ubuntu-16-nginx-php-phpmyadmin-mysql-5      ubuntu-16-nginx-php-phpmyadmin-mysql-5          50                                      [OK]
+ubuntu-debootstrap                                        debootstrap --variant=minbase --components=m…   44                  [OK]
+open-liberty                                              Open Liberty multi-architecture images based…   39                  [OK]
+i386/ubuntu                                               Ubuntu is a Debian-based Linux operating sys…   24
+nuagebec/ubuntu                                           Simple always updated Ubuntu docker images w…   24                                      [OK]
+1and1internet/ubuntu-16-apache-php-5.6                    ubuntu-16-apache-php-5.6                        14                                      [OK]
+1and1internet/ubuntu-16-apache-php-7.0                    ubuntu-16-apache-php-7.0                        13                                      [OK]
+1and1internet/ubuntu-16-nginx-php-phpmyadmin-mariadb-10   ubuntu-16-nginx-php-phpmyadmin-mariadb-10       11                                      [OK]
+1and1internet/ubuntu-16-nginx-php-5.6-wordpress-4         ubuntu-16-nginx-php-5.6-wordpress-4             7                                       [OK]
+1and1internet/ubuntu-16-apache-php-7.1                    ubuntu-16-apache-php-7.1                        6                                       [OK]
+darksheer/ubuntu                                          Base Ubuntu Image -- Updated hourly             5                                       [OK]
+pivotaldata/ubuntu                                        A quick freshening-up of the base Ubuntu doc…   4
+1and1internet/ubuntu-16-nginx-php-7.0                     ubuntu-16-nginx-php-7.0                         4                                       [OK]
+pivotaldata/ubuntu16.04-build                             Ubuntu 16.04 image for GPDB compilation         2
+smartentry/ubuntu                                         ubuntu with smartentry                          1                                       [OK]
+1and1internet/ubuntu-16-php-7.1                           ubuntu-16-php-7.1                               1                                       [OK]
+pivotaldata/ubuntu-gpdb-dev                               Ubuntu images for GPDB development              1
+pivotaldata/ubuntu16.04-test                              Ubuntu 16.04 image for GPDB testing             0
+olegkrilov@olegkrilov-VirtualBox:~/les8/task1$
+
+
+Second, install it (with docker compose)
+__________________________________________________________________________
+
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ touch docker-compose-install.sh
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ nano docker-compose-install.sh
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ chmod +x docker-compose-install.sh
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ cat docker-compose-install.sh
+#!/bin/bash
+
+echo "Install docker compose"
+sudo apt-get install docker-compose -y
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+echo "Done"
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ ./docker-compose-install.sh
+Install docker compose
+Чтение списков пакетов… Готово
+Построение дерева зависимостей
+Чтение информации о состоянии… Готово
+Уже установлен пакет docker-compose самой новой версии (1.25.0-1).
+Обновлено 0 пакетов, установлено 0 новых пакетов, для удаления отмечено 0 пакетов, и 2 пакетов не обновлено.
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   651  100   651    0     0   1708      0 --:--:-- --:--:-- --:--:--  1704
+100 16.3M  100 16.3M    0     0   127k      0  0:02:11  0:02:11 --:--:--  132k
+Done
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ touch docker-compose.yml
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ nano docker-compose.yml
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ cat docker-compose.yml
+version: '3'
+services:
+  ubuntu:
+    image: ubuntu
+    command: tail -F anything
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ sudo docker-compose up -d --build
+Pulling ubuntu (ubuntu:latest)...
+latest: Pulling from library/ubuntu
+da7391352a9b: Pull complete
+14428a6d4bcd: Pull complete
+2c2d948710f2: Pull complete
+Digest: sha256:c95a8e48bf88e9849f3e0f723d9f49fa12c5a00cfc6e60d2bc99d87555295e4c
+Status: Downloaded newer image for ubuntu:latest
+Creating task2_ubuntu_1 ... done
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ docker ps
+CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS               NAMES
+a5b9e19570f1        ubuntu              "tail -F anything"   12 seconds ago      Up 10 seconds                           task2_ubuntu_1
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ docker exec -it
+"docker exec" requires at least 2 arguments.
+See 'docker exec --help'.
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
+olegkrilov@olegkrilov-VirtualBox:~/les8/task2$ docker exec -it task2_ubuntu_1 bash
+root@a5b9e19570f1:/# ls -li
+total 48
+292821 lrwxrwxrwx   1 root root    7 Nov  6 01:21 bin -> usr/bin
+312126 drwxr-xr-x   2 root root 4096 Apr 15  2020 boot
+     2 drwxr-xr-x   5 root root  340 Dec  7 09:03 dev
+312810 drwxr-xr-x   1 root root 4096 Dec  7 09:03 etc
+312170 drwxr-xr-x   2 root root 4096 Apr 15  2020 home
+293766 lrwxrwxrwx   1 root root    7 Nov  6 01:21 lib -> usr/lib
+293767 lrwxrwxrwx   1 root root    9 Nov  6 01:21 lib32 -> usr/lib32
+293768 lrwxrwxrwx   1 root root    9 Nov  6 01:21 lib64 -> usr/lib64
+293769 lrwxrwxrwx   1 root root   10 Nov  6 01:21 libx32 -> usr/libx32
+312171 drwxr-xr-x   2 root root 4096 Nov  6 01:21 media
+312172 drwxr-xr-x   2 root root 4096 Nov  6 01:21 mnt
+312173 drwxr-xr-x   2 root root 4096 Nov  6 01:21 opt
+     1 dr-xr-xr-x 208 root root    0 Dec  7 09:03 proc
+312175 drwx------   2 root root 4096 Nov  6 01:25 root
+312720 drwxr-xr-x   1 root root 4096 Nov 25 22:25 run
+293773 lrwxrwxrwx   1 root root    8 Nov  6 01:21 sbin -> usr/sbin
+312179 drwxr-xr-x   2 root root 4096 Nov  6 01:21 srv
+     1 dr-xr-xr-x  13 root root    0 Dec  7 09:03 sys
+312181 drwxrwxrwt   2 root root 4096 Nov  6 01:25 tmp
+312711 drwxr-xr-x   1 root root 4096 Nov  6 01:21 usr
+312713 drwxr-xr-x   1 root root 4096 Nov  6 01:25 var
+root@a5b9e19570f1:/#
+
+
